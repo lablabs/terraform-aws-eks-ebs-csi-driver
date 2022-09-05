@@ -11,10 +11,12 @@ No requirements.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_addon_installation_argo_helm"></a> [addon\_installation\_argo\_helm](#module\_addon\_installation\_argo\_helm) | ../../ | n/a |
-| <a name="module_addon_installation_argo_kubernetes"></a> [addon\_installation\_argo\_kubernetes](#module\_addon\_installation\_argo\_kubernetes) | ../../ | n/a |
-| <a name="module_addon_installation_disabled"></a> [addon\_installation\_disabled](#module\_addon\_installation\_disabled) | ../../ | n/a |
-| <a name="module_addon_installation_helm"></a> [addon\_installation\_helm](#module\_addon\_installation\_helm) | ../../ | n/a |
+| <a name="module_ebs_csi_argo_helm"></a> [ebs\_csi\_argo\_helm](#module\_ebs\_csi\_argo\_helm) | ../../ | n/a |
+| <a name="module_ebs_csi_argo_kubernetes"></a> [ebs\_csi\_argo\_kubernetes](#module\_ebs\_csi\_argo\_kubernetes) | ../../ | n/a |
+| <a name="module_ebs_csi_disabled"></a> [ebs\_csi\_disabled](#module\_ebs\_csi\_disabled) | ../../ | n/a |
+| <a name="module_ebs_csi_helm"></a> [ebs\_csi\_helm](#module\_ebs\_csi\_helm) | ../../ | n/a |
+| <a name="module_ebs_without_irsa_policy"></a> [ebs\_without\_irsa\_policy](#module\_ebs\_without\_irsa\_policy) | ../../ | n/a |
+| <a name="module_ebs_without_irsa_role"></a> [ebs\_without\_irsa\_role](#module\_ebs\_without\_irsa\_role) | ../../ | n/a |
 | <a name="module_eks_cluster"></a> [eks\_cluster](#module\_eks\_cluster) | cloudposse/eks-cluster/aws | 2.3.0 |
 | <a name="module_eks_node_group"></a> [eks\_node\_group](#module\_eks\_node\_group) | cloudposse/eks-node-group/aws | 2.4.0 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | 3.14.2 |
