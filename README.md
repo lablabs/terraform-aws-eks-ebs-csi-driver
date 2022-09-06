@@ -1,4 +1,4 @@
-# AWS EKS <$addon-name> Terraform module
+# AWS EKS EBS CSI driver Terraform module
 
 [![labyrinth labs logo](ll-logo.png)](https://lablabs.io/)
 
@@ -6,12 +6,12 @@ We help companies build, run, deploy and scale software and infrastructure by em
 
 ---
 
-[![Terraform validate](https://github.com/lablabs/terraform-aws-eks-<$addon-name>/actions/workflows/validate.yaml/badge.svg)](https://github.com/lablabs/terraform-aws-eks-<$addon-name>/actions/workflows/validate.yaml)
-[![pre-commit](https://github.com/lablabs/terraform-aws-<$addon-name>/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/lablabs/terraform-aws-eks-<$addon-name>/actions/workflows/pre-commit.yml)
+[![Terraform validate](https://github.com/lablabs/terraform-aws-eks-ebs-csi-driver/actions/workflows/validate.yaml/badge.svg)](https://github.com/lablabs/terraform-aws-eks-ebs-csi-driver/actions/workflows/validate.yaml)
+[![pre-commit](https://github.com/lablabs/terraform-aws-ebs-csi-driver/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/lablabs/terraform-aws-eks-ebs-csi-driver/actions/workflows/pre-commit.yml)
 
 ## Description
 
-A terraform module to deploy the <$addon-name> on Amazon EKS cluster.
+A terraform module to deploy the AWS EBS CSI driver on Amazon EKS cluster.
 
 ## Related Projects
 
@@ -32,14 +32,9 @@ To overcome this issue, the module deploys the ArgoCD application object using t
 
 Create helm release resource and deploy it as argo application (set `enabled = true`, `argo_enabled = true` and `argo_helm_enabled = true`)
 
-<!-- Uncomment paragraph bellow if addon contains IAM resources
 ## AWS IAM resources
 
-To disable of creation IRSA role and IRSA policy, set `irsa_role_create = false` and `irsa_policy_enabled = false`, respectively -->
-
-<!-- Uncomment paragraph bellow if addon uses Role assuming
-### Role assuming
-To assume role set `irsa_assume_role_enabled = true` and specify `irsa_assume_role_arn` variable -->
+To disable of creation IRSA role and IRSA policy, set `irsa_role_create = false` and `irsa_policy_enabled = false`, respectively
 
 ## Examples
 
@@ -73,7 +68,6 @@ No modules.
 | [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 | [kubernetes_manifest.this](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/manifest) | resource |
 | [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.this_assume](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.this_irsa](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [utils_deep_merge_yaml.argo_helm_values](https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml) | data source |
 | [utils_deep_merge_yaml.values](https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml) | data source |
@@ -101,8 +95,8 @@ No modules.
 | <a name="input_argo_sync_policy"></a> [argo\_sync\_policy](#input\_argo\_sync\_policy) | ArgoCD syncPolicy manifest parameter | `map` | `{}` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Variable indicating whether deployment is enabled | `bool` | `true` | no |
 | <a name="input_helm_atomic"></a> [helm\_atomic](#input\_helm\_atomic) | If set, installation process purges chart on fail. The wait flag will be set automatically if atomic is used | `bool` | `false` | no |
-| <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Helm chart name to be installed | `string` | `"<$addon-name>"` | no |
-| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Version of the Helm chart | `string` | `"<helm_chart_version>"` | no |
+| <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Helm chart name to be installed | `string` | `"aws-ebs-csi-driver"` | no |
+| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Version of the Helm chart | `string` | `"2.10.1"` | no |
 | <a name="input_helm_cleanup_on_fail"></a> [helm\_cleanup\_on\_fail](#input\_helm\_cleanup\_on\_fail) | Allow deletion of new resources created in this helm upgrade when upgrade fails | `bool` | `false` | no |
 | <a name="input_helm_create_namespace"></a> [helm\_create\_namespace](#input\_helm\_create\_namespace) | Create the namespace if it does not yet exist | `bool` | `true` | no |
 | <a name="input_helm_dependency_update"></a> [helm\_dependency\_update](#input\_helm\_dependency\_update) | Runs helm dependency update before installing the chart | `bool` | `false` | no |
@@ -117,14 +111,14 @@ No modules.
 | <a name="input_helm_postrender"></a> [helm\_postrender](#input\_helm\_postrender) | Value block with a path to a binary file to run after helm renders the manifest which can alter the manifest contents | `map(any)` | `{}` | no |
 | <a name="input_helm_recreate_pods"></a> [helm\_recreate\_pods](#input\_helm\_recreate\_pods) | Perform pods restart during helm upgrade/rollback | `bool` | `false` | no |
 | <a name="input_helm_release_max_history"></a> [helm\_release\_max\_history](#input\_helm\_release\_max\_history) | Maximum number of release versions stored per release | `number` | `0` | no |
-| <a name="input_helm_release_name"></a> [helm\_release\_name](#input\_helm\_release\_name) | Helm release name | `string` | `"<$addon-name>"` | no |
+| <a name="input_helm_release_name"></a> [helm\_release\_name](#input\_helm\_release\_name) | Helm release name | `string` | `"aws-ebs-csi-driver"` | no |
 | <a name="input_helm_render_subchart_notes"></a> [helm\_render\_subchart\_notes](#input\_helm\_render\_subchart\_notes) | If set, render helm subchart notes along with the parent | `bool` | `true` | no |
 | <a name="input_helm_replace"></a> [helm\_replace](#input\_helm\_replace) | Re-use the given name of helm release, only if that name is a deleted release which remains in the history. This is unsafe in production | `bool` | `false` | no |
 | <a name="input_helm_repo_ca_file"></a> [helm\_repo\_ca\_file](#input\_helm\_repo\_ca\_file) | Helm repositories cert file | `string` | `""` | no |
 | <a name="input_helm_repo_cert_file"></a> [helm\_repo\_cert\_file](#input\_helm\_repo\_cert\_file) | Helm repositories cert file | `string` | `""` | no |
 | <a name="input_helm_repo_key_file"></a> [helm\_repo\_key\_file](#input\_helm\_repo\_key\_file) | Helm repositories cert key file | `string` | `""` | no |
 | <a name="input_helm_repo_password"></a> [helm\_repo\_password](#input\_helm\_repo\_password) | Password for HTTP basic authentication against the helm repository | `string` | `""` | no |
-| <a name="input_helm_repo_url"></a> [helm\_repo\_url](#input\_helm\_repo\_url) | Helm repository | `string` | `"<helm_repo_url>"` | no |
+| <a name="input_helm_repo_url"></a> [helm\_repo\_url](#input\_helm\_repo\_url) | Helm repository | `string` | `"https://kubernetes-sigs.github.io/aws-ebs-csi-driver"` | no |
 | <a name="input_helm_repo_username"></a> [helm\_repo\_username](#input\_helm\_repo\_username) | Username for HTTP basic authentication against the helm repository | `string` | `""` | no |
 | <a name="input_helm_reset_values"></a> [helm\_reset\_values](#input\_helm\_reset\_values) | When upgrading, reset the values to the ones built into the helm chart | `bool` | `false` | no |
 | <a name="input_helm_reuse_values"></a> [helm\_reuse\_values](#input\_helm\_reuse\_values) | When upgrading, reuse the last helm release's values and merge in any overrides. If 'helm\_reset\_values' is specified, this is ignored | `bool` | `false` | no |
@@ -134,18 +128,15 @@ No modules.
 | <a name="input_helm_wait"></a> [helm\_wait](#input\_helm\_wait) | Will wait until all helm release resources are in a ready state before marking the release as successful. It will wait for as long as timeout | `bool` | `false` | no |
 | <a name="input_helm_wait_for_jobs"></a> [helm\_wait\_for\_jobs](#input\_helm\_wait\_for\_jobs) | If wait is enabled, will wait until all helm Jobs have been completed before marking the release as successful. It will wait for as long as timeout | `bool` | `false` | no |
 | <a name="input_irsa_additional_policies"></a> [irsa\_additional\_policies](#input\_irsa\_additional\_policies) | Map of the additional policies to be attached to default role. Where key is arbitrary id and value is policy arn. | `map(string)` | `{}` | no |
-| <a name="input_irsa_assume_role_arn"></a> [irsa\_assume\_role\_arn](#input\_irsa\_assume\_role\_arn) | Assume role arn. Assume role must be enabled. | `string` | `""` | no |
-| <a name="input_irsa_assume_role_enabled"></a> [irsa\_assume\_role\_enabled](#input\_irsa\_assume\_role\_enabled) | Whether IRSA is allowed to assume role defined by irsa\_assume\_role\_arn. | `bool` | `false` | no |
 | <a name="input_irsa_policy_enabled"></a> [irsa\_policy\_enabled](#input\_irsa\_policy\_enabled) | Whether to create opinionated policy to allow operations on specified zones in `policy_allowed_zone_ids`. | `bool` | `true` | no |
 | <a name="input_irsa_role_create"></a> [irsa\_role\_create](#input\_irsa\_role\_create) | Whether to create IRSA role and annotate service account | `bool` | `true` | no |
-| <a name="input_irsa_role_name_prefix"></a> [irsa\_role\_name\_prefix](#input\_irsa\_role\_name\_prefix) | The IRSA role name prefix for vector | `string` | `"<$addon-name>-irsa"` | no |
+| <a name="input_irsa_role_name_prefix"></a> [irsa\_role\_name\_prefix](#input\_irsa\_role\_name\_prefix) | The IRSA role name prefix for AWS EBS CSI controller | `string` | `"ebs-csi-controller"` | no |
 | <a name="input_irsa_tags"></a> [irsa\_tags](#input\_irsa\_tags) | IRSA resources tags | `map(string)` | `{}` | no |
-| <a name="input_namespace"></a> [namespace](#input\_namespace) | The K8s namespace in which the <$addon-name> service account has been created | `string` | `"<$addon-name>"` | no |
-| <a name="input_rbac_create"></a> [rbac\_create](#input\_rbac\_create) | Whether to create and use RBAC resources | `bool` | `true` | no |
+| <a name="input_namespace"></a> [namespace](#input\_namespace) | The K8s namespace in which the AWS EBS CSI driver service account has been created | `string` | `"kube-system"` | no |
 | <a name="input_service_account_create"></a> [service\_account\_create](#input\_service\_account\_create) | Whether to create Service Account | `bool` | `true` | no |
-| <a name="input_service_account_name"></a> [service\_account\_name](#input\_service\_account\_name) | The k8s <$addon-name> service account name | `string` | `"<$addon-name>"` | no |
-| <a name="input_settings"></a> [settings](#input\_settings) | Additional helm sets which will be passed to the Helm chart values, see https://hub.helm.sh/charts/stable/<$addon-name> | `map(any)` | `{}` | no |
-| <a name="input_values"></a> [values](#input\_values) | Additional yaml encoded values which will be passed to the Helm chart, see https://hub.helm.sh/charts/stable/<$addon-name> | `string` | `""` | no |
+| <a name="input_service_account_name"></a> [service\_account\_name](#input\_service\_account\_name) | The k8s EBS CSI driver service account name | `string` | `"aws-ebs-csi-driver"` | no |
+| <a name="input_settings"></a> [settings](#input\_settings) | Additional helm sets which will be passed to the Helm chart values, see https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/charts/aws-ebs-csi-driver | `map(any)` | `{}` | no |
+| <a name="input_values"></a> [values](#input\_values) | Additional yaml encoded values which will be passed to the Helm chart, see https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/charts/aws-ebs-csi-driver | `string` | `""` | no |
 
 ## Outputs
 
@@ -153,7 +144,7 @@ No modules.
 |------|-------------|
 | <a name="output_helm_release_application_metadata"></a> [helm\_release\_application\_metadata](#output\_helm\_release\_application\_metadata) | Argo application helm release attributes |
 | <a name="output_helm_release_metadata"></a> [helm\_release\_metadata](#output\_helm\_release\_metadata) | Helm release attributes |
-| <a name="output_iam_role_attributes"></a> [iam\_role\_attributes](#output\_iam\_role\_attributes) | <$addon-name> IAM role atributes |
+| <a name="output_iam_role_attributes"></a> [iam\_role\_attributes](#output\_iam\_role\_attributes) | EBS CSI driver IAM role atributes |
 | <a name="output_kubernetes_application_attributes"></a> [kubernetes\_application\_attributes](#output\_kubernetes\_application\_attributes) | Argo kubernetes manifest attributes |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 

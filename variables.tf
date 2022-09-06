@@ -14,28 +14,26 @@ variable "cluster_identity_oidc_issuer_arn" {
   description = "The OIDC Identity issuer ARN for the cluster that can be used to associate IAM roles with a service account"
 }
 
-# ================ common variables (required) ================
-
 variable "helm_chart_name" {
   type        = string
-  default     = "<$addon-name>"
+  default     = "aws-ebs-csi-driver"
   description = "Helm chart name to be installed"
 }
 
 variable "helm_chart_version" {
   type        = string
-  default     = "<helm_chart_version>"
+  default     = "2.10.1"
   description = "Version of the Helm chart"
 }
 
 variable "helm_release_name" {
   type        = string
-  default     = "<$addon-name>"
+  default     = "aws-ebs-csi-driver"
   description = "Helm release name"
 }
 variable "helm_repo_url" {
   type        = string
-  default     = "<helm_repo_url>"
+  default     = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
   description = "Helm repository"
 }
 
@@ -47,34 +45,31 @@ variable "helm_create_namespace" {
 
 variable "namespace" {
   type        = string
-  default     = "<$addon-name>"
-  description = "The K8s namespace in which the <$addon-name> service account has been created"
+  default     = "kube-system"
+  description = "The K8s namespace in which the AWS EBS CSI driver service account has been created"
 }
 
 variable "settings" {
   type        = map(any)
   default     = {}
-  description = "Additional helm sets which will be passed to the Helm chart values, see https://hub.helm.sh/charts/stable/<$addon-name>"
+  description = "Additional helm sets which will be passed to the Helm chart values, see https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/charts/aws-ebs-csi-driver"
 }
 
 variable "values" {
   type        = string
   default     = ""
-  description = "Additional yaml encoded values which will be passed to the Helm chart, see https://hub.helm.sh/charts/stable/<$addon-name>"
-}
-
-# ================ IRSA variables (optional) ================
-
-variable "rbac_create" {
-  type        = bool
-  default     = true
-  description = "Whether to create and use RBAC resources"
+  description = "Additional yaml encoded values which will be passed to the Helm chart, see https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/charts/aws-ebs-csi-driver"
 }
 
 variable "service_account_create" {
   type        = bool
   default     = true
   description = "Whether to create Service Account"
+}
+
+variable "service_account_name" {
+  default     = "aws-ebs-csi-driver"
+  description = "The k8s EBS CSI driver service account name"
 }
 
 variable "irsa_role_create" {
@@ -89,17 +84,6 @@ variable "irsa_policy_enabled" {
   description = "Whether to create opinionated policy to allow operations on specified zones in `policy_allowed_zone_ids`."
 }
 
-variable "irsa_assume_role_enabled" {
-  type        = bool
-  default     = false
-  description = "Whether IRSA is allowed to assume role defined by irsa_assume_role_arn."
-}
-
-variable "irsa_assume_role_arn" {
-  default     = ""
-  description = "Assume role arn. Assume role must be enabled."
-}
-
 variable "irsa_additional_policies" {
   type        = map(string)
   default     = {}
@@ -108,8 +92,8 @@ variable "irsa_additional_policies" {
 
 variable "irsa_role_name_prefix" {
   type        = string
-  default     = "<$addon-name>-irsa"
-  description = "The IRSA role name prefix for vector"
+  default     = "ebs-csi-controller"
+  description = "The IRSA role name prefix for AWS EBS CSI controller"
 }
 
 variable "irsa_tags" {
@@ -117,13 +101,6 @@ variable "irsa_tags" {
   default     = {}
   description = "IRSA resources tags"
 }
-
-variable "service_account_name" {
-  default     = "<$addon-name>"
-  description = "The k8s <$addon-name> service account name"
-}
-
-# ================ argo variables (required) ================
 
 variable "argo_namespace" {
   type        = string
@@ -193,8 +170,6 @@ variable "argo_helm_values" {
   description = "Value overrides to use when deploying argo application object with helm"
 }
 
-# ================ argo kubernetes manifest variables (required) ================
-
 variable "argo_kubernetes_manifest_computed_fields" {
   type        = list(string)
   default     = ["metadata.labels", "metadata.annotations"]
@@ -217,8 +192,6 @@ variable "argo_kubernetes_manifest_wait_fields" {
   default     = {}
   description = "A map of fields and a corresponding regular expression with a pattern to wait for. The provider will wait until the field matches the regular expression. Use * for any value."
 }
-
-# ================ helm release variables (required) ================
 
 variable "helm_repo_key_file" {
   type        = string
