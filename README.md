@@ -40,15 +40,21 @@ To disable of creation IRSA role and IRSA policy, set `irsa_role_create = false`
 
 Creation of defined Storage Classes is enabled by default. Set `storage_classes_create = false` to disable it.
 
-A list of Storage Classes is defined in `storage_classes`. One Storage Class is defined by default.
+One Storage Class is defined by default:
 
-[kubernetes-specific Storage Class parameters](https://kubernetes.io/docs/concepts/storage/storage-classes/#the-storageclass-resource) (`provisioner` is set to `ebs.csi.aws.com` in [EBS-CSI-driver chart](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/blob/master/charts/aws-ebs-csi-driver/templates/storageclass.yaml) statically)
+https://github.com/lablabs/terraform-aws-eks-ebs-csi-driver/blob/b5c05b76e2664dc235130791a958ab0409f84837/variables.tf#L111-L128
 
-[EBS-CSI-specific Storage Class parameters](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/blob/master/docs/parameters.md)
+To extend or modify this definition use variable `storage_classes`.
+`provisioner` attribute of defined Storage Classes will be set to `ebs.csi.aws.com` ([EBS-CSI-driver chart](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/blob/master/charts/aws-ebs-csi-driver/templates/storageclass.yaml)). To define other Storage Class parameters use [EBS-CSI Storage Class parameters](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/blob/master/docs/parameters.md)
 
 ### Potential issues after enabling StorageClass creation
 `gp2` Storage Class is created along with EKS cluster creation and it is annotated as [default Storage Class](https://docs.aws.amazon.com/eks/latest/userguide/storage-classes.html).
-Default configuration of Storage Class in this module contains annotation `"storageclass.kubernetes.io/is-default-class" : "true"`, so an error may occur while creating Persistent Volume Claim objects without specifying Storage Class name, because of more than 1 Storage Classes are annotated as default. [Annotate only one Storage Class as default](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/#changing-the-default-storageclass) to fix this issue.
+Default configuration of Storage Class in this module contains annotation `"storageclass.kubernetes.io/is-default-class" : "true"`, so an error may occur while creating Persistent Volume Claim objects without specifying Storage Class name, because of more than 1 Storage Classes are annotated as default.
+
+To prevent this error:
+
+1. [change annotation on gp2 Storage Class](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/#changing-the-default-storageclass) or
+2. modify `storage_classes` to not annotate Storage Classes as default
 
 
 
