@@ -36,6 +36,39 @@ Create helm release resource and deploy it as argo application (set `enabled = t
 
 To disable of creation IRSA role and IRSA policy, set `irsa_role_create = false` and `irsa_policy_enabled = false`, respectively
 
+## Storage Class
+
+Default StorageClass is enabled by default with following definition:
+
+    {
+      "name" : "ebs-csi-gp3"
+      "annotations" : {
+        "storageclass.kubernetes.io/is-default-class" : "true"
+      }
+      "allowVolumeExpansion" : true
+      "volumeBindingMode" : "WaitForFirstConsumer"
+      "reclaimPolicy" : "Delete"
+      "parameters" : {
+        "type" : "gp3"
+        "encrypted" : "true"
+      }
+    }
+
+To override default module StorageClass behaviour use variable `storage_classes`. Provisioner attribute is hardcoded in [EBS-CSI-driver chart](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/blob/master/charts/aws-ebs-csi-driver/templates/storageclass.yaml) and cannot be changed. For other parameters attributes please see [EBS-CSI Storage Class parameters](https://github.com/kubernetes-sigs/aws-ebs-csi-driver/blob/master/docs/parameters.md).
+
+### Potential issues after enabling StorageClass creation
+
+With each new cluster, Amazon EKS applies a `kubernetes.io/aws-ebs` based StorageClass named `gp2` with defined `“storageclass.kubernetes.io/is-default-class” : “true”` and by default module also creates StorageClass which contains same `storageclass.kubernetes.io/is-default-class` annotations. This may lead to errors while creating Persistent Volume Claim objects without specifying StorageClass name as described in the [documentation](https://kubernetes.io/docs/tasks/administer-cluster/change-default-storage-class/#changing-the-default-storageclass).
+
+There are several ways to prevent this error:
+1. delete EKS default StorageClass gp2 before PVC usage
+2. change annotation on EKS default storage class
+3. disable or modify default module StorageClass definition
+
+
+
+
+
 ## Examples
 
 See [Basic example](examples/basic/README.md) for further information.
