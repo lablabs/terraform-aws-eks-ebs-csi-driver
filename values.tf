@@ -18,6 +18,7 @@ locals {
         }
       }
     }
+    "storageClasses" : var.storage_classes_create ? var.storage_classes : []
   })
 }
 
