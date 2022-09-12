@@ -136,6 +136,8 @@ No modules.
 | <a name="input_service_account_create"></a> [service\_account\_create](#input\_service\_account\_create) | Whether to create Service Account | `bool` | `true` | no |
 | <a name="input_service_account_name"></a> [service\_account\_name](#input\_service\_account\_name) | The k8s EBS CSI driver service account name | `string` | `"aws-ebs-csi-driver"` | no |
 | <a name="input_settings"></a> [settings](#input\_settings) | Additional helm sets which will be passed to the Helm chart values, see https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/charts/aws-ebs-csi-driver | `map(any)` | `{}` | no |
+| <a name="input_storage_classes"></a> [storage\_classes](#input\_storage\_classes) | List of the custom Storage Classes definitions | `list` | <pre>[<br>  {<br>    "allowVolumeExpansion": true,<br>    "annotations": {<br>      "storageclass.kubernetes.io/is-default-class": "true"<br>    },<br>    "name": "ebs-csi-gp3",<br>    "parameters": {<br>      "encrypted": "true",<br>      "type": "gp3"<br>    },<br>    "reclaimPolicy": "Delete",<br>    "volumeBindingMode": "WaitForFirstConsumer"<br>  }<br>]</pre> | no |
+| <a name="input_storage_classes_create"></a> [storage\_classes\_create](#input\_storage\_classes\_create) | Whether to create Storage Classes | `bool` | `true` | no |
 | <a name="input_values"></a> [values](#input\_values) | Additional yaml encoded values which will be passed to the Helm chart, see https://github.com/kubernetes-sigs/aws-ebs-csi-driver/tree/master/charts/aws-ebs-csi-driver | `string` | `""` | no |
 
 ## Outputs
