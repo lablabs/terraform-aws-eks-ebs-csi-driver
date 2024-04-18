@@ -6,6 +6,7 @@ data "aws_iam_policy_document" "this" {
   count = local.irsa_role_create && var.irsa_policy_enabled ? 1 : 0
 
   #checkov:skip=CKV_AWS_111 there is correct condition for existing Tags
+  #checkov:skip=CKV_AWS_356
   # Official documentation https://raw.githubusercontent.com/kubernetes-sigs/aws-ebs-csi-driver/helm-chart-aws-ebs-csi-driver-2.10.1/docs/example-iam-policy.json
 
   statement {
@@ -85,18 +86,6 @@ data "aws_iam_policy_document" "this" {
   statement {
     effect    = "Allow"
     resources = ["*"]
-    actions   = ["ec2:CreateVolume"]
-
-    condition {
-      test     = "StringLike"
-      variable = "aws:RequestTag/kubernetes.io/cluster/*"
-      values   = ["owned"]
-    }
-  }
-
-  statement {
-    effect    = "Allow"
-    resources = ["*"]
     actions   = ["ec2:DeleteVolume"]
 
     condition {
@@ -125,8 +114,8 @@ data "aws_iam_policy_document" "this" {
 
     condition {
       test     = "StringLike"
-      variable = "ec2:ResourceTag/kubernetes.io/cluster/*"
-      values   = ["owned"]
+      variable = "ec2:ResourceTag/kubernetes.io/created-for/pvc/name"
+      values   = ["*"]
     }
   }
 
