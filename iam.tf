@@ -85,18 +85,6 @@ data "aws_iam_policy_document" "this" {
   statement {
     effect    = "Allow"
     resources = ["*"]
-    actions   = ["ec2:CreateVolume"]
-
-    condition {
-      test     = "StringLike"
-      variable = "aws:RequestTag/kubernetes.io/cluster/*"
-      values   = ["owned"]
-    }
-  }
-
-  statement {
-    effect    = "Allow"
-    resources = ["*"]
     actions   = ["ec2:DeleteVolume"]
 
     condition {
@@ -125,8 +113,8 @@ data "aws_iam_policy_document" "this" {
 
     condition {
       test     = "StringLike"
-      variable = "ec2:ResourceTag/kubernetes.io/cluster/*"
-      values   = ["owned"]
+      variable = "ec2:ResourceTag/kubernetes.io/created-for/pvc/name"
+      values   = ["*"]
     }
   }
 
