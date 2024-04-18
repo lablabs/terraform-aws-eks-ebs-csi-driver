@@ -6,6 +6,7 @@ data "aws_iam_policy_document" "this" {
   count = local.irsa_role_create && var.irsa_policy_enabled ? 1 : 0
 
   #checkov:skip=CKV_AWS_111 there is correct condition for existing Tags
+  #checkov:skip=CKV_AWS_356
   # Official documentation https://raw.githubusercontent.com/kubernetes-sigs/aws-ebs-csi-driver/helm-chart-aws-ebs-csi-driver-2.10.1/docs/example-iam-policy.json
 
   statement {
