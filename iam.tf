@@ -60,6 +60,16 @@ data "aws_iam_policy_document" "this" {
   }
 
   statement {
+    effect = "Allow"
+
+    resources = [
+      "arn:aws:ec2:*:*:snapshot/*",
+    ]
+
+    actions = ["ec2:CreateVolume"]
+  }
+
+  statement {
     effect    = "Allow"
     resources = ["*"]
     actions   = ["ec2:CreateVolume"]
