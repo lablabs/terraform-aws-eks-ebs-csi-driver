@@ -1,9 +1,5 @@
-locals {
-  irsa_role_create = var.enabled && var.service_account_create && var.irsa_role_create
-}
-
 data "aws_iam_policy_document" "this" {
-  count = local.irsa_role_create && var.irsa_policy_enabled ? 1 : 0
+  count = var.enabled && var.irsa_policy == null ? 1 : 0
 
   #checkov:skip=CKV_AWS_111 there is correct condition for existing Tags
   #checkov:skip=CKV_AWS_356
@@ -152,59 +148,4 @@ data "aws_iam_policy_document" "this" {
       values   = ["true"]
     }
   }
-}
-
-resource "aws_iam_policy" "this" {
-  count = local.irsa_role_create && var.irsa_policy_enabled ? 1 : 0
-
-  name        = "${var.irsa_role_name_prefix}-${var.helm_chart_name}"
-  path        = "/"
-  description = "Policy for EBS CSI driver"
-  policy      = data.aws_iam_policy_document.this[0].json
-
-  tags = var.irsa_tags
-}
-
-data "aws_iam_policy_document" "this_irsa" {
-  count = local.irsa_role_create ? 1 : 0
-
-  statement {
-    actions = ["sts:AssumeRoleWithWebIdentity"]
-
-    principals {
-      type        = "Federated"
-      identifiers = [var.cluster_identity_oidc_issuer_arn]
-    }
-
-    condition {
-      test     = "StringEquals"
-      variable = "${replace(var.cluster_identity_oidc_issuer, "https://", "")}:sub"
-
-      values = [
-        "system:serviceaccount:${var.namespace}:${var.service_account_name}",
-      ]
-    }
-
-    effect = "Allow"
-  }
-}
-
-resource "aws_iam_role" "this" {
-  count              = local.irsa_role_create ? 1 : 0
-  name               = "${var.irsa_role_name_prefix}-${var.helm_chart_name}"
-  assume_role_policy = data.aws_iam_policy_document.this_irsa[0].json
-  tags               = var.irsa_tags
-}
-
-resource "aws_iam_role_policy_attachment" "this" {
-  count      = local.irsa_role_create && var.irsa_policy_enabled ? 1 : 0
-  role       = aws_iam_role.this[0].name
-  policy_arn = aws_iam_policy.this[0].arn
-}
-
-resource "aws_iam_role_policy_attachment" "this_additional" {
-  for_each = local.irsa_role_create ? var.irsa_additional_policies : {}
-
-  role       = aws_iam_role.this[0].name
-  policy_arn = each.value
 }

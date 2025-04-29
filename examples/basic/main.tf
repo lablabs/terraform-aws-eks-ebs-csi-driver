@@ -1,4 +1,4 @@
-module "ebs_csi_disabled" {
+module "addon_installation_disabled" {
   source = "../../"
 
   enabled = false
@@ -7,27 +7,7 @@ module "ebs_csi_disabled" {
   cluster_identity_oidc_issuer_arn = module.eks_cluster.eks_cluster_identity_oidc_issuer_arn
 }
 
-module "ebs_without_irsa_role" {
-  source = "../../"
-
-  enabled = true
-
-  irsa_role_create                 = false
-  cluster_identity_oidc_issuer     = module.eks_cluster.eks_cluster_identity_oidc_issuer
-  cluster_identity_oidc_issuer_arn = module.eks_cluster.eks_cluster_identity_oidc_issuer_arn
-}
-
-module "ebs_without_irsa_policy" {
-  source = "../../"
-
-  enabled = true
-
-  irsa_policy_enabled              = false
-  cluster_identity_oidc_issuer     = module.eks_cluster.eks_cluster_identity_oidc_issuer
-  cluster_identity_oidc_issuer_arn = module.eks_cluster.eks_cluster_identity_oidc_issuer_arn
-}
-
-module "ebs_csi_helm" {
+module "addon_installation_helm" {
   source = "../../"
 
   enabled           = true
@@ -37,20 +17,13 @@ module "ebs_csi_helm" {
   cluster_identity_oidc_issuer     = module.eks_cluster.eks_cluster_identity_oidc_issuer
   cluster_identity_oidc_issuer_arn = module.eks_cluster.eks_cluster_identity_oidc_issuer_arn
 
-  helm_release_name = "aws-ebs-csi-helm"
-  namespace         = "aws-ebs-csi-helm"
-
   values = yamlencode({
-    "podLabels" : {
-      "app" : "aws-ebs-csi-helm"
-    }
+    # insert sample values here
   })
-
-  helm_timeout = 240
-  helm_wait    = true
 }
 
-module "ebs_csi_argo_kubernetes" {
+# Please, see README.md and Argo Kubernetes deployment method for implications of using Kubernetes installation method
+module "addon_installation_argo_kubernetes" {
   source = "../../"
 
   enabled           = true
@@ -60,16 +33,17 @@ module "ebs_csi_argo_kubernetes" {
   cluster_identity_oidc_issuer     = module.eks_cluster.eks_cluster_identity_oidc_issuer
   cluster_identity_oidc_issuer_arn = module.eks_cluster.eks_cluster_identity_oidc_issuer_arn
 
-  helm_release_name = "aws-ebs-csi-argo-kubernetes"
-  namespace         = "aws-ebs-csi-argo-kubernetes"
+  values = yamlencode({
+    # insert sample values here
+  })
 
   argo_sync_policy = {
-    "automated" : {}
-    "syncOptions" = ["CreateNamespace=true"]
+    automated   = {}
+    syncOptions = ["CreateNamespace=true"]
   }
 }
 
-module "ebs_csi_argo_helm" {
+module "addon_installation_argo_helm" {
   source = "../../"
 
   enabled           = true
@@ -79,12 +53,8 @@ module "ebs_csi_argo_helm" {
   cluster_identity_oidc_issuer     = module.eks_cluster.eks_cluster_identity_oidc_issuer
   cluster_identity_oidc_issuer_arn = module.eks_cluster.eks_cluster_identity_oidc_issuer_arn
 
-  helm_release_name = "aws-ebs-csi-argo-helm"
-  namespace         = "aws-ebs-csi-argo-helm"
-
-  argo_namespace = "argo"
   argo_sync_policy = {
-    "automated" : {}
-    "syncOptions" = ["CreateNamespace=true"]
+    automated   = {}
+    syncOptions = ["CreateNamespace=true"]
   }
 }
