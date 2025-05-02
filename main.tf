@@ -9,7 +9,7 @@
 
 locals {
   addon = {
-    name = "aws-ebs-csi-driver"
+    name = "ebs-csi-driver"
     namespace = "kube-system"
 
     helm_chart_name    = "aws-ebs-csi-driver"
