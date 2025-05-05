@@ -24,8 +24,9 @@ locals {
       irsa_policy_enabled   = var.irsa_policy_enabled != null ? var.irsa_policy_enabled : true
     }
     "${local.addon.name}-node" = {
-      irsa_role_name_prefix = var.irsa_role_name_prefix != null ? var.irsa_role_name_prefix : "ebs-csi-controller"
-      irsa_policy           = var.irsa_policy != null ? var.irsa_policy : data.aws_iam_policy_document.this[0].json
+      irsa_role_create      = var.node_irsa_role_create != null ? var.node_irsa_role_create : false
+      irsa_role_name_prefix = var.node_irsa_role_name_prefix != null ? var.node_irsa_role_name_prefix : "ebs-csi-controller-node"
+      irsa_policy           = var.node_irsa_policy != null ? var.node_irsa_policy : data.aws_iam_policy_document.this[0].json
       irsa_policy_enabled   = var.irsa_policy_enabled != null ? var.irsa_policy_enabled : true
     }
   }

@@ -31,3 +31,20 @@ variable "storage_classes" {
   description = "List of the custom Storage Classes definitions"
 }
 
+variable "node_irsa_role_create" {
+  type        = bool
+  default     = false
+  description = "Whether to create IRSA role and annotate service account for the node"
+}
+
+variable "node_irsa_policy" {
+  type        = map(string)
+  default     = {}
+  description = "Map of the additional policies to be attached to node role. Where key is arbitrary id and value is policy arn"
+}
+
+variable "node_irsa_role_name_prefix" {
+  type        = string
+  default     = ""
+  description = "IRSA role name prefix. Either `node_irsa_role_name_prefix` or `node_irsa_role_name` must be set. Defaults to `\"\"`."
+}
