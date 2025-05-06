@@ -24,10 +24,12 @@ locals {
       irsa_policy_enabled   = var.irsa_policy_enabled != null ? var.irsa_policy_enabled : true
     }
     "${local.addon.name}-node" = {
-      irsa_role_create      = var.node_irsa_role_create
-      irsa_role_name_prefix = var.node_irsa_role_name_prefix != null ? var.node_irsa_role_name_prefix : "ebs-csi-controller-node"
-      irsa_policy           = var.node_irsa_policy != null ? var.node_irsa_policy : try(data.aws_iam_policy_document.node[0].json, "")
-      irsa_policy_enabled   = var.node_irsa_policy_enabled
+      irsa_role_create       = var.node_irsa_role_create
+      irsa_role_name_prefix  = var.node_irsa_role_name_prefix != null ? var.node_irsa_role_name_prefix : "ebs-csi-controller-node"
+      irsa_policy            = var.node_irsa_policy != null ? var.node_irsa_policy : try(data.aws_iam_policy_document.node[0].json, "")
+      irsa_policy_enabled    = var.node_irsa_policy_enabled
+      service_account_create = var.node_service_account_create
+      service_account_name   = var.service_account_name
     }
   }
 
