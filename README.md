@@ -56,6 +56,7 @@ See [basic example](examples/basic) for further information.
 
 | Name | Type |
 |------|------|
+| [aws_iam_policy_document.node](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [utils_deep_merge_yaml.values](https://registry.terraform.io/providers/cloudposse/utils/latest/docs/data-sources/deep_merge_yaml) | data source |
 > [!IMPORTANT]
@@ -140,9 +141,12 @@ See [basic example](examples/basic) for further information.
 | <a name="input_irsa_role_name_prefix"></a> [irsa\_role\_name\_prefix](#input\_irsa\_role\_name\_prefix) | IRSA role name prefix. Either `irsa_role_name_prefix` or `irsa_role_name` must be set. Defaults to `""`. | `string` |
 | <a name="input_irsa_tags"></a> [irsa\_tags](#input\_irsa\_tags) | IRSA resources tags. Defaults to `{}`. | `map(string)` |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | The Kubernetes Namespace in which the Helm chart will be installed (required). | `string` |
-| <a name="input_node_irsa_policy"></a> [node\_irsa\_policy](#input\_node\_irsa\_policy) | Map of the additional policies to be attached to node role. Where key is arbitrary id and value is policy arn | `map(string)` |
+| <a name="input_node_irsa_policy"></a> [node\_irsa\_policy](#input\_node\_irsa\_policy) | Map of the additional policies to be attached to node role. Where key is arbitrary id and value is policy arn | `string` |
+| <a name="input_node_irsa_policy_enabled"></a> [node\_irsa\_policy\_enabled](#input\_node\_irsa\_policy\_enabled) | Whether to create IAM policy specified by `irsa_policy`. Mutually exclusive with `irsa_assume_role_enabled`. Defaults to `false`. | `bool` |
 | <a name="input_node_irsa_role_create"></a> [node\_irsa\_role\_create](#input\_node\_irsa\_role\_create) | Whether to create IRSA role and annotate service account for the node | `bool` |
 | <a name="input_node_irsa_role_name_prefix"></a> [node\_irsa\_role\_name\_prefix](#input\_node\_irsa\_role\_name\_prefix) | IRSA role name prefix. Either `node_irsa_role_name_prefix` or `node_irsa_role_name` must be set. Defaults to `""`. | `string` |
+| <a name="input_node_service_account_create"></a> [node\_service\_account\_create](#input\_node\_service\_account\_create) | Whether to create Service Account for node. Defaults to `true`. | `bool` |
+| <a name="input_node_service_account_name"></a> [node\_service\_account\_name](#input\_node\_service\_account\_name) | The Kubernetes Service Account name for node. Defaults to the addon name. Defaults to `""`. | `string` |
 | <a name="input_rbac_create"></a> [rbac\_create](#input\_rbac\_create) | Whether to create and use RBAC resources. Defaults to `true`. | `bool` |
 | <a name="input_service_account_create"></a> [service\_account\_create](#input\_service\_account\_create) | Whether to create Service Account. Defaults to `true`. | `bool` |
 | <a name="input_service_account_name"></a> [service\_account\_name](#input\_service\_account\_name) | The Kubernetes Service Account name. Defaults to the addon name. Defaults to `""`. | `string` |

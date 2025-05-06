@@ -1,9 +1,5 @@
-locals {
-  irsa_policy_enabled = var.irsa_policy_enabled != null ? var.irsa_policy_enabled : var.irsa_assume_role_enabled == false
-}
-
-data "aws_iam_policy_document" "this" {
-  count = var.enabled && var.irsa_policy == null && local.irsa_policy_enabled ? 1 : 0
+data "aws_iam_policy_document" "node" {
+  count = var.enabled && var.node_irsa_policy == null && var.node_irsa_policy_enabled ? 1 : 0
 
   #checkov:skip=CKV_AWS_111 there is correct condition for existing Tags
   #checkov:skip=CKV_AWS_356

@@ -24,10 +24,10 @@ locals {
       irsa_policy_enabled   = var.irsa_policy_enabled != null ? var.irsa_policy_enabled : true
     }
     "${local.addon.name}-node" = {
-      irsa_role_create      = var.node_irsa_role_create != null ? var.node_irsa_role_create : false
+      irsa_role_create      = var.node_irsa_role_create
       irsa_role_name_prefix = var.node_irsa_role_name_prefix != null ? var.node_irsa_role_name_prefix : "ebs-csi-controller-node"
-      irsa_policy           = var.node_irsa_policy != null ? var.node_irsa_policy : data.aws_iam_policy_document.this[0].json
-      irsa_policy_enabled   = var.irsa_policy_enabled != null ? var.irsa_policy_enabled : true
+      irsa_policy           = var.node_irsa_policy != null ? var.node_irsa_policy : data.aws_iam_policy_document.node[0].json
+      irsa_policy_enabled   = var.node_irsa_policy_enabled
     }
   }
 
@@ -43,8 +43,8 @@ locals {
     }
     node = {
       serviceAccount = {
-        create = false
-        name   = var.service_account_name != null ? var.service_account_name : local.addon.name
+        create = var.node_service_account_create
+        name   = var.node_service_account_name != null ? var.service_account_name : "${local.addon.name}-node"
         annotations = module.addon-irsa[local.addon.name].irsa_role_enabled ? {
           "eks.amazonaws.com/role-arn" = module.addon-irsa[local.addon.name].iam_role_attributes.arn
         } : tomap({})
