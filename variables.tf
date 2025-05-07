@@ -49,15 +49,15 @@ variable "node_irsa_role_create" {
   description = "Whether to create IRSA role and annotate service account for the node"
 }
 
-variable "node_irsa_role_name_prefix" {
+variable "node_irsa_role_name" {
   type        = string
   default     = "ebs-csi-controller-node"
-  description = "IRSA role name prefix. Either `node_irsa_role_name_prefix` or `node_irsa_role_name` must be set. Defaults to `\"\"`."
+  description = "IRSA role name . Either `node_irsa_role_name_prefix` or `node_irsa_role_name` must be set. Defaults to `\"ebs-csi-controller-node\"`."
 }
 
 variable "node_irsa_policy_enabled" {
   type        = bool
-  default     = false
+  default     = true
   description = "Whether to create IAM policy specified by `irsa_policy`. Mutually exclusive with `irsa_assume_role_enabled`. Defaults to `false`."
 }
 
