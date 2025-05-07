@@ -57,7 +57,7 @@ variable "node_irsa_role_name" {
 
 variable "node_irsa_policy_enabled" {
   type        = bool
-  default     = true
+  default     = false
   description = "Whether to create IAM policy specified by `irsa_policy`. Mutually exclusive with `irsa_assume_role_enabled`. Defaults to `false`."
 }
 

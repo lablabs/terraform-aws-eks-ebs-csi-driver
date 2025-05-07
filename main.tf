@@ -29,7 +29,7 @@ locals {
       irsa_policy            = var.node_irsa_policy != null ? var.node_irsa_policy : try(data.aws_iam_policy.node[0].policy, "")
       irsa_policy_enabled    = var.node_irsa_policy_enabled
       service_account_create = var.node_service_account_create
-      service_account_name   = var.service_account_name
+      service_account_name   = var.node_service_account_name != null ? var.node_service_account_name : var.service_account_name != null ? var.service_account_name : local.addon.name
     }
   }
 
@@ -46,10 +46,13 @@ locals {
     node = {
       serviceAccount = {
         create = var.node_service_account_create
-        name   = var.node_service_account_name != null ? var.service_account_name : "${local.addon.name}-node"
-        annotations = module.addon-irsa[local.addon.name].irsa_role_enabled ? {
+        name   = local.addon_irsa["${local.addon.name}-node"].service_account_name
+        annotations = module.addon-irsa["${local.addon.name}-node"].irsa_role_enabled ? {
+          "eks.amazonaws.com/role-arn" = module.addon-irsa["${local.addon.name}-node"].iam_role_attributes.arn
+          } : module.addon-irsa[local.addon.name].irsa_role_enabled ? {
           "eks.amazonaws.com/role-arn" = module.addon-irsa[local.addon.name].iam_role_attributes.arn
         } : tomap({})
+
       }
     }
     storageClasses = var.storage_classes_create ? var.storage_classes : []
