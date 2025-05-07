@@ -1,5 +1,5 @@
 locals {
-  irsa_policy_enabled = var.irsa_policy_enabled != null ? var.irsa_policy_enabled : false
+  irsa_policy_enabled = var.irsa_policy_enabled != null ? var.irsa_policy_enabled : true
 }
 
 data "aws_iam_policy" "this" {
