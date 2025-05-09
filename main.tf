@@ -26,7 +26,7 @@ locals {
     "${local.addon.name}-node" = {
       irsa_role_create       = var.node_irsa_role_create
       irsa_role_name         = var.node_irsa_role_name
-      irsa_policy            = var.node_irsa_policy != null ? var.node_irsa_policy : try(data.aws_iam_policy.node[0].policy, "")
+      irsa_policy            = var.node_irsa_policy != null ? var.node_irsa_policy : try(data.aws_iam_policy.this[0].policy, "")
       irsa_policy_enabled    = var.node_irsa_policy_enabled
       service_account_create = var.node_service_account_create
       service_account_name   = var.node_service_account_name != null ? var.node_service_account_name : var.service_account_name != null ? var.service_account_name : local.addon.name
