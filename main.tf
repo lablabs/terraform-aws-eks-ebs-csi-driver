@@ -21,7 +21,7 @@ locals {
     (local.addon.name) = {
       irsa_role_name      = var.irsa_role_name != null ? var.irsa_role_name : "ebs-csi-controller"
       irsa_policy         = var.irsa_policy != null ? var.irsa_policy : try(data.aws_iam_policy.this[0].policy, "")
-      irsa_policy_enabled = var.irsa_policy_enabled != null ? var.irsa_policy_enabled : true
+      irsa_policy_enabled = var.irsa_policy_enabled != null ? var.irsa_policy_enabled : var.irsa_assume_role_enabled == false
     }
     "${local.addon.name}-node" = {
       irsa_role_create       = var.node_irsa_role_create
