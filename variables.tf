@@ -30,39 +30,3 @@ variable "storage_classes" {
   ]
   description = "List of the custom Storage Classes definitions"
 }
-
-variable "node_service_account_create" {
-  type        = bool
-  default     = false
-  description = "Whether to create Service Account for node. Defaults to `true`."
-}
-
-variable "node_service_account_name" {
-  type        = string
-  default     = null
-  description = "The Kubernetes Service Account name for node. Defaults to the addon name. Defaults to `\"\"`."
-}
-
-variable "node_irsa_role_create" {
-  type        = bool
-  default     = false
-  description = "Whether to create IRSA role and annotate service account for the node"
-}
-
-variable "node_irsa_role_name" {
-  type        = string
-  default     = "ebs-csi-controller-node"
-  description = "IRSA role name . Either `node_irsa_role_name_prefix` or `node_irsa_role_name` must be set. Defaults to `\"ebs-csi-controller-node\"`."
-}
-
-variable "node_irsa_policy_enabled" {
-  type        = bool
-  default     = false
-  description = "Whether to create IAM policy specified by `irsa_policy`. Mutually exclusive with `irsa_assume_role_enabled`. Defaults to `false`."
-}
-
-variable "node_irsa_policy" {
-  type        = string
-  default     = ""
-  description = "Map of the additional policies to be attached to node role. Where key is arbitrary id and value is policy arn"
-}

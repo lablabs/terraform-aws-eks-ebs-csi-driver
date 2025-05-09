@@ -23,14 +23,6 @@ locals {
       irsa_policy_enabled = local.irsa_policy_enabled
       irsa_policy         = var.irsa_policy != null ? var.irsa_policy : data.aws_iam_policy.this[0].policy
     }
-    "${local.addon.name}-node" = {
-      service_account_create = var.node_service_account_create
-      service_account_name   = var.node_service_account_name != null ? var.node_service_account_name : var.service_account_name != null ? var.service_account_name : local.addon.name
-      irsa_role_create       = var.node_irsa_role_create
-      irsa_role_name         = var.node_irsa_role_name
-      irsa_policy_enabled    = var.node_irsa_policy_enabled
-      irsa_policy            = var.node_irsa_policy != null ? var.node_irsa_policy : data.aws_iam_policy.this[0].policy
-    }
   }
 
   addon_values = yamlencode({
@@ -45,14 +37,11 @@ locals {
     }
     node = {
       serviceAccount = {
-        create = var.node_service_account_create
-        name   = local.addon_irsa["${local.addon.name}-node"].service_account_name
-        annotations = module.addon-irsa["${local.addon.name}-node"].irsa_role_enabled ? {
-          "eks.amazonaws.com/role-arn" = module.addon-irsa["${local.addon.name}-node"].iam_role_attributes.arn
-          } : module.addon-irsa[local.addon.name].irsa_role_enabled ? {
+        create = false
+        name   = var.service_account_name != null ? var.service_account_name : local.addon.name
+        annotations = module.addon-irsa[local.addon.name].irsa_role_enabled ? {
           "eks.amazonaws.com/role-arn" = module.addon-irsa[local.addon.name].iam_role_attributes.arn
         } : tomap({})
-
       }
     }
     storageClasses = var.storage_classes_create ? var.storage_classes : []
