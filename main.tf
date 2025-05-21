@@ -28,8 +28,8 @@ locals {
   addon_values = yamlencode({
     controller = {
       serviceAccount = {
-        create = var.service_account_create != null ? var.service_account_create : true
-        name   = var.service_account_name != null ? var.service_account_name : local.addon.name
+        create = module.addon-irsa[local.addon.name].service_account_create
+        name   = module.addon-irsa[local.addon.name].service_account_name
         annotations = module.addon-irsa[local.addon.name].irsa_role_enabled ? {
           "eks.amazonaws.com/role-arn" = module.addon-irsa[local.addon.name].iam_role_attributes.arn
         } : tomap({})
@@ -37,8 +37,8 @@ locals {
     }
     node = {
       serviceAccount = {
-        create = false
-        name   = var.service_account_name != null ? var.service_account_name : local.addon.name
+        create = module.addon-irsa[local.addon.name].service_account_create
+        name   = module.addon-irsa[local.addon.name].service_account_name
         annotations = module.addon-irsa[local.addon.name].irsa_role_enabled ? {
           "eks.amazonaws.com/role-arn" = module.addon-irsa[local.addon.name].iam_role_attributes.arn
         } : tomap({})
@@ -46,4 +46,6 @@ locals {
     }
     storageClasses = var.storage_classes_create ? var.storage_classes : []
   })
+
+  addon_depends_on = []
 }
