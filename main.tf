@@ -4,7 +4,7 @@
  * A terraform module to deploy the [AWS EBS CSI driver](https://github.com/kubernetes-sigs/aws-ebs-csi-driver) on Amazon EKS cluster.
  *
  * [![Terraform validate](https://github.com/lablabs/terraform-aws-eks-ebs-csi-driver/actions/workflows/validate.yaml/badge.svg)](https://github.com/lablabs/terraform-aws-eks-ebs-csi-driver/actions/workflows/validate.yaml)
- * [![pre-commit](https://github.com/lablabs/terraform-aws-eks-ebs-csi-driver/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/lablabs/terraform-aws-eks-ebs-csi-driver/actions/workflows/pre-commit.yml)
+ * [![pre-commit](https://github.com/lablabs/terraform-aws-eks-ebs-csi-driver/actions/workflows/pre-commit.yaml/badge.svg)](https://github.com/lablabs/terraform-aws-eks-ebs-csi-driver/actions/workflows/pre-commit.yaml)
  */
 
 locals {
@@ -19,9 +19,8 @@ locals {
 
   addon_irsa = {
     (local.addon.name) = {
-      irsa_role_name_prefix = var.irsa_role_name_prefix != null ? var.irsa_role_name_prefix : local.addon.name
-      irsa_policy_enabled   = local.irsa_policy_enabled
-      irsa_policy           = var.irsa_policy != null ? var.irsa_policy : try(data.aws_iam_policy.this[0].policy, "")
+      irsa_policy_enabled = local.irsa_policy_enabled
+      irsa_policy         = var.irsa_policy != null ? var.irsa_policy : try(data.aws_iam_policy.this[0].policy, "")
     }
   }
 
@@ -37,11 +36,8 @@ locals {
     }
     node = {
       serviceAccount = {
-        create = module.addon-irsa[local.addon.name].service_account_create
+        create = false
         name   = module.addon-irsa[local.addon.name].service_account_name
-        annotations = module.addon-irsa[local.addon.name].irsa_role_enabled ? {
-          "eks.amazonaws.com/role-arn" = module.addon-irsa[local.addon.name].iam_role_attributes.arn
-        } : tomap({})
       }
     }
     storageClasses = var.storage_classes_create ? var.storage_classes : []

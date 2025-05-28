@@ -1,19 +1,29 @@
 moved {
-  from = helm_release.argo_application[0]
-  to   = module.addon.helm_release.argo_application[0]
+  from = kubernetes_manifest.this
+  to   = module.addon.kubernetes_manifest.this
 }
 
 moved {
-  from = aws_iam_role.this[0]
-  to   = module.addon-irsa["ebs-csi-driver"].aws_iam_role.this[0]
+  from = helm_release.this
+  to   = module.addon.helm_release.this
 }
 
 moved {
-  from = aws_iam_policy.this[0]
-  to   = module.addon-irsa["ebs-csi-driver"].aws_iam_policy.this[0]
+  from = helm_release.argo_application
+  to   = module.addon.helm_release.argo_application
 }
 
 moved {
-  from = aws_iam_role_policy_attachment.this[0]
-  to   = module.addon-irsa["ebs-csi-driver"].aws_iam_role_policy_attachment.this[0]
+  from = aws_iam_role.this
+  to   = module.addon-irsa["ebs-csi-driver"].aws_iam_role.this
+}
+
+moved {
+  from = aws_iam_policy.this
+  to   = module.addon-irsa["ebs-csi-driver"].aws_iam_policy.this
+}
+
+moved {
+  from = aws_iam_role_policy_attachment.this
+  to   = module.addon-irsa["ebs-csi-driver"].aws_iam_role_policy_attachment.this
 }
