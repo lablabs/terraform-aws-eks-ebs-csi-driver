@@ -13,7 +13,7 @@ locals {
     namespace = "kube-system"
 
     helm_chart_name    = "aws-ebs-csi-driver"
-    helm_chart_version = "2.39.3"
+    helm_chart_version = "2.67.2" # 1.67.2
     helm_repo_url      = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
   }
 
